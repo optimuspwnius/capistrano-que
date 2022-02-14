@@ -14,18 +14,18 @@ After=syslog.target network.target
 
 
 # Or `Type=simple` unless using watchdog?
-Type=notify
+Type=simple
 
 # If your Que process locks up, systemd's watchdog will restart it within seconds.
 WatchdogSec=10
 
 WorkingDirectory=<%= File.join(fetch(:deploy_to), 'current') %>
-ExecStart=<%= expanded_bundle_path %> exec que
+ExecStart=<%= expanded_bundle_path %> exec que <%= File.join(fetch(:deploy_to), 'current') %>/config/environment.rb
 
 # Use `systemctl kill -s TSTP que` to quiet the Que process
 
-<%="User=#{que_user}" if que_user %>
-UMask=0002
+#<%="User=#{que_user}" if que_user %>
+#UMask=0002
 
 <%="EnvironmentFile=#{File.join(fetch(:deploy_to), 'current')}/#{fetch(:que_service_unit_env_file)}" if fetch(:que_service_unit_env_file) %>
 
