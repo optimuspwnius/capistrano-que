@@ -1,3 +1,3 @@
 module Capistrano
-  QueVERSION = '2.0.0'
+  QueVERSION = '2.0.1'
 end
