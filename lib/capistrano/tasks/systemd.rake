@@ -112,12 +112,14 @@ namespace :que do
   def systemctl_command(*args, process: nil)
     execute_array = [:systemctl, '--user']
     if process
+      puts "systemctl_command: process true"
       execute_array.push(
-        *args, que_service_unit_name(process: process)
+        *args, fetch(:que_service_unit_name)
         ).flatten
       backend.execute(*execute_array, raise_on_non_zero_exit: false)
     else
-      execute_array.push(*args, que_service_unit_name).flatten
+      puts "systemctl_command: process false"
+      execute_array.push(*args, fetch(:que_service_unit_name)).flatten
       backend.execute(*execute_array, raise_on_non_zero_exit: false)
     end
   end
@@ -166,14 +168,6 @@ namespace :que do
 
   def que_service_file_name
     "#{fetch(:que_service_unit_name)}.service"
-  end
-
-  def que_service_unit_name(process: nil)
-    if process
-      "#{fetch(:que_service_unit_name)}@#{process}"
-    else
-      "#{fetch(:que_service_unit_name)}@{1..#{que_processes}}"
-    end
   end
 
   def process_block
