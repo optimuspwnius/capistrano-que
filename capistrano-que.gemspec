@@ -6,11 +6,11 @@ require 'capistrano/que/version'
 Gem::Specification.new do |spec|
   spec.name = 'capistrano-que'
   spec.version = Capistrano::QueVERSION
-  spec.authors = ['Abdelkader Boudih']
-  spec.email = ['terminale@gmail.com']
+  spec.authors = ['Tayden Miller']
+  spec.email = ['tayden007@hotmail.com']
   spec.summary = %q{Que integration for Capistrano}
   spec.description = %q{Que integration for Capistrano}
-  spec.homepage = 'https://github.com/seuros/capistrano-que'
+  spec.homepage = 'https://github.com/optimuspwnius/capistrano-que'
   spec.license = 'LGPL-3.0'
 
   spec.required_ruby_version     = '>= 2.0.0'

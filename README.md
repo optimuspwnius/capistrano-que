@@ -10,7 +10,6 @@ And then execute:
 
     $ bundle
 
-
 ## Usage
 ```ruby
     # Capfile
@@ -48,14 +47,6 @@ in your deploy.rb file:
 ```ruby
 SSHKit.config.command_map[:que] = "bundle exec que"
 ```
-
-## Configuring the log files on systems with less recent Systemd versions
-
-The template used by this project assumes a recent version of Systemd (v240+, e.g. Ubuntu 20.04).
-
-On systems with a less recent version, the `append:` functionality is not supported, and the Que log messages are sent to the syslog.
-
-It's possible to workaround this limitation by configuring the system logger to filter the Que messages; see [wiki](/../../wiki/Configuring-append-mode-log-files-via-Syslog-NG).
 
 ## Contributing
 
