@@ -6,6 +6,8 @@ namespace :que do
   namespace :systemd do
     desc 'Config Que systemd service'
     task :config do
+      puts "WTF..."
+      puts __PATH__
       on roles(fetch(:que)) do |role|
 
         upload_compiled_template = lambda do |template_name, unit_filename|
