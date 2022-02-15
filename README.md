@@ -29,7 +29,7 @@ Configurable options - Please ensure you check your version's branch for the ava
 :que_pid => File.join(shared_path, 'tmp', 'pids', 'que.pid') # ensure this path exists in production before deploying.
 :que_env => fetch(:rack_env, fetch(:rails_env, fetch(:stage)))
 :que_log => File.join(shared_path, 'log', 'que.log')
-:que_queue => %w(default high low)
+:que_queue => %w(default)
 
 # que systemd options
 :que_service_unit_name => 'que'
