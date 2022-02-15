@@ -6,28 +6,18 @@ Description=que for <%= "#{fetch(:application)} (#{fetch(:stage)})" %>
 
 After=syslog.target network.target
 
-
 # https://www.freedesktop.org/software/systemd/man/systemd.service.html
 # https://www.freedesktop.org/software/systemd/man/systemd.exec.html
 
 [Service]
 
-
-# Or `Type=simple` unless using watchdog?
 Type=simple
 
-# If your Que process locks up, systemd's watchdog will restart it within seconds.
-#WatchdogSec=10
-
 WorkingDirectory=<%= File.join(fetch(:deploy_to), 'current') %>
+
 ExecStart=<%= expanded_bundle_path %> exec que <%= File.join(fetch(:deploy_to), 'current') %>/config/environment.rb
 
 # Use `systemctl kill -s TSTP que` to quiet the Que process
-
-#<%="User=#{que_user}" if que_user %>
-#UMask=0002
-
-<%="EnvironmentFile=#{File.join(fetch(:deploy_to), 'current')}/#{fetch(:que_service_unit_env_file)}" if fetch(:que_service_unit_env_file) %>
 
 # Greatly reduce Ruby memory fragmentation and heap usage
 # https://www.mikeperham.com/2018/04/25/taming-rails-memory-bloat/
@@ -41,7 +31,6 @@ Restart=on-failure
 <%="StandardOutput=append:#{fetch(:que_log)}" if fetch(:que_log) %>
 <%="StandardError=append:#{fetch(:que_error_log)}" if fetch(:que_error_log) %>
 
-# This will default to "bundler" if we don't specify it
 SyslogIdentifier=que
 
 [Install]
