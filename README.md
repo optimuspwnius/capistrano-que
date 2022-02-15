@@ -1,12 +1,10 @@
-[![Gem Version](https://badge.fury.io/rb/capistrano-sidekiq.svg)](http://badge.fury.io/rb/capistrano-sidekiq)
+# Capistrano::Que
 
-# Capistrano::Sidekiq
-
-Sidekiq integration for Capistrano
+Que integration for Capistrano
 
 ## Installation
 
-    gem 'capistrano-sidekiq', group: :development
+    gem 'capistrano-que', group: :development
 
 And then execute:
 
@@ -17,90 +15,47 @@ And then execute:
 ```ruby
     # Capfile
 
-    require 'capistrano/sidekiq'
-    install_plugin Capistrano::Sidekiq  # Default sidekiq tasks
-    # Then select your service manager
-    install_plugin Capistrano::Sidekiq::Systemd
+    require 'capistrano/que'
+    install_plugin Capistrano::Que
+    install_plugin Capistrano::Que::Systemd
 ```
 
+Ensure your server has a .rbenv-vars with RAILS_ENV=production otherwise the service will fail to start
 
 Configurable options - Please ensure you check your version's branch for the available settings - shown here with defaults:
 
 ```ruby
-:sidekiq_roles => :app
-:sidekiq_default_hooks => true
-:sidekiq_pid => File.join(shared_path, 'tmp', 'pids', 'sidekiq.pid') # ensure this path exists in production before deploying.
-:sidekiq_env => fetch(:rack_env, fetch(:rails_env, fetch(:stage)))
-:sidekiq_log => File.join(shared_path, 'log', 'sidekiq.log')
-# single config
-:sidekiq_config => 'config/sidekiq.yml'
-# per process config - process 1, process 2,... etc.
-:sidekiq_config => [
-    'config/sidekiq_config1.yml',
-    'config/sidekiq_config2.yml'
-]
-:sidekiq_concurrency => 25
-:sidekiq_queue => %w(default high low)
-:sidekiq_processes => 1 # number of systemd processes you want to start
+:que_roles => :app
+:que_default_hooks => true
+:que_pid => File.join(shared_path, 'tmp', 'pids', 'que.pid') # ensure this path exists in production before deploying.
+:que_env => fetch(:rack_env, fetch(:rails_env, fetch(:stage)))
+:que_log => File.join(shared_path, 'log', 'que.log')
+:que_queue => %w(default high low)
 
-# sidekiq systemd options
-:sidekiq_service_templates_path => 'config/deploy/templates' # to be used if a custom template is needed (filaname should be #{fetch(:sidekiq_service_unit_name)}.service.capistrano.erb or sidekiq.service.capistrano.erb
-:sidekiq_service_unit_name => 'sidekiq'
-:sidekiq_service_unit_user => :user # :system
-:sidekiq_enable_lingering => true
-:sidekiq_lingering_user => nil
-
-# sidekiq monit
-:sidekiq_monit_templates_path => 'config/deploy/templates'
-:sidekiq_monit_conf_dir => '/etc/monit/conf.d'
-:sidekiq_monit_use_sudo => true
-:monit_bin => '/usr/bin/monit'
-:sidekiq_monit_default_hooks => true
-:sidekiq_monit_group => nil
-:sidekiq_service_name => "sidekiq_#{fetch(:application)}"
-
-:sidekiq_user => nil #user to run sidekiq as
+# que systemd options
+:que_service_unit_name => 'que'
+:que_service_unit_user => :user # :system
+:que_enable_lingering => true
+:que_lingering_user => nil
+:que_user => nil #user to run que as
 ```
-See `capistrano/sidekiq/helpers.rb` for other undocumented configuration settings.
-
-## Known issues with Capistrano 3
-
-There is a known bug that prevents sidekiq from starting when pty is true on Capistrano 3.
-```ruby
-set :pty,  false
-```
+See `capistrano/que/helpers.rb` for other undocumented configuration settings.
 
 ## Bundler
 
-If you'd like to prepend `bundle exec` to your sidekiq and sidekiqctl calls, modify the SSHKit command maps
+If you'd like to prepend `bundle exec` to your que calls, modify the SSHKit command maps
 in your deploy.rb file:
 ```ruby
-SSHKit.config.command_map[:sidekiq] = "bundle exec sidekiq"
-SSHKit.config.command_map[:sidekiqctl] = "bundle exec sidekiqctl"
-```
-
-
-## Customizing the monit sidekiq templates
-
-If you need change some config in redactor, you can
-
-```
-bundle exec rails generate capistrano:sidekiq:monit:template
-```
-
-If your deploy user has no need in `sudo` for using monit, you can disable it as follows:
-
-```ruby
-set :sidekiq_monit_use_sudo, false
+SSHKit.config.command_map[:que] = "bundle exec que"
 ```
 
 ## Configuring the log files on systems with less recent Systemd versions
 
 The template used by this project assumes a recent version of Systemd (v240+, e.g. Ubuntu 20.04).
 
-On systems with a less recent version, the `append:` functionality is not supported, and the Sidekiq log messages are sent to the syslog.
+On systems with a less recent version, the `append:` functionality is not supported, and the Que log messages are sent to the syslog.
 
-It's possible to workaround this limitation by configuring the system logger to filter the Sidekiq messages; see [wiki](/../../wiki/Configuring-append-mode-log-files-via-Syslog-NG).
+It's possible to workaround this limitation by configuring the system logger to filter the Que messages; see [wiki](/../../wiki/Configuring-append-mode-log-files-via-Syslog-NG).
 
 ## Contributing
 

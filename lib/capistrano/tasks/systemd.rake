@@ -4,7 +4,7 @@ namespace :que do
 
   standard_actions = {
     start: 'Start Que',
-    stop: 'Stop Que (graceful shutdown within timeout, put unfinished tasks back to Redis)',
+    stop: 'Stop Que',
     status: 'Get Que Status'
   }
   standard_actions.each do |command, description|
