@@ -6,7 +6,7 @@ namespace :que do
   namespace :systemd do
     desc 'Config Que systemd service'
     task :config do
-      on roles(fetch(:que_role)) do |role|
+      on roles(fetch(:que)) do |role|
 
         upload_compiled_template = lambda do |template_name, unit_filename|
           git_plugin.template_que template_name, "#{fetch(:tmp_dir)}/#{unit_filename}", role
@@ -36,7 +36,7 @@ namespace :que do
 
     desc 'Enable Que systemd service'
     task :enable do
-      on roles(fetch(:que_role)) do
+      on roles(fetch(:que)) do
         git_plugin.execute_systemd("enable", fetch(:que_service_unit_name))
 
         if fetch(:que_systemctl_user) != :system && fetch(:que_enable_lingering)
@@ -47,7 +47,7 @@ namespace :que do
 
     desc 'Disable Que systemd service'
     task :disable do
-      on roles(fetch(:que_role)) do
+      on roles(fetch(:que)) do
         git_plugin.execute_systemd("disable", fetch(:que_service_unit_name))
       end
     end
@@ -55,14 +55,14 @@ namespace :que do
 
   desc 'Start Que service via systemd'
   task :start do
-    on roles(fetch(:que_role)) do
+    on roles(fetch(:que)) do
       git_plugin.execute_systemd("start", fetch(:que_service_unit_name))
     end
   end
 
   desc 'Stop Que service via systemd'
   task :stop do
-    on roles(fetch(:que_role)) do
+    on roles(fetch(:que)) do
       git_plugin.execute_systemd("stop", fetch(:que_service_unit_name))
     end
   end
@@ -78,14 +78,14 @@ namespace :que do
 
   desc 'Restart Que service via systemd'
   task :restart do
-    on roles(fetch(:que_role)) do
+    on roles(fetch(:que)) do
       git_plugin.execute_systemd("restart", fetch(:que_service_unit_name))
     end
   end
 
   desc 'Reload Que service via systemd'
   task :reload do
-    on roles(fetch(:que_role)) do
+    on roles(fetch(:que)) do
       service_ok = if fetch(:que_systemctl_user) == :system
         execute("#{fetch(:que_systemctl_bin)} status #{fetch(:que_service_unit_name)} > /dev/null", raise_on_non_zero_exit: false)
       else
@@ -105,7 +105,7 @@ namespace :que do
 
   desc 'Get Que service status via systemd'
   task :status do
-    on roles(fetch(:que_role)) do
+    on roles(fetch(:que)) do
       git_plugin.execute_systemd("status", fetch(:que_service_unit_name))
     end
   end
