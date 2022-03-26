@@ -8,6 +8,7 @@ module Capistrano
       set_if_empty :que_enable_lingering, true
       set_if_empty :que_lingering_user, nil
       set_if_empty :que_service_templates_path, 'config/deploy/templates'
+      set_if_empty :que_queue_name, 'default'
     end
 
     def define_tasks
