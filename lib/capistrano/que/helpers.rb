@@ -3,7 +3,6 @@ module Capistrano
     
     def que_queue
       puts self.methods
-      puts properties
       puts role
       puts server
       
