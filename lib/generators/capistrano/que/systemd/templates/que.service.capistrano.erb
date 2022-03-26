@@ -15,7 +15,7 @@ Type=simple
 
 WorkingDirectory=<%= File.join(fetch(:deploy_to), 'current') %>
 
-ExecStart=<%= expanded_bundle_path %> exec que <%= File.join(fetch(:deploy_to), 'current') %>/config/environment.rb -q <%= fetch(:host, :queue) ? fetch(:host, :queue) : fetch(:que_queue_name) %>
+ExecStart=<%= expanded_bundle_path %> exec que <%= File.join(fetch(:deploy_to), 'current') %>/config/environment.rb -q <%= fetch(:host, :queue) %>
 
 # Use `systemctl kill -s TSTP que` to quiet the Que process
 
