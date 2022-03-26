@@ -1,5 +1,11 @@
 module Capistrano
   module Que::Helpers
+    
+    def que_queue
+      on roles(:que) do |server|
+        server.properties.queue.to_s
+      end
+    end
 
     def que_require
       if fetch(:que_require)
