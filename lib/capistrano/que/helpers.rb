@@ -5,7 +5,7 @@ module Capistrano
       puts self.methods
       
       #puts server
-      puts role_properties
+      puts role.properties
       
       on roles(:que) do |server|
         server.properties.queue.to_s
