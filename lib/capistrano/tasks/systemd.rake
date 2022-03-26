@@ -42,7 +42,7 @@ namespace :que do
 
   desc 'Install systemd que service'
   task :install do
-    servers.each do |server|
+    on servers do |server|
       puts server
       puts server.roles
       on roles fetch(:que_roles) do |role|
