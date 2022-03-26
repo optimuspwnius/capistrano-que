@@ -2,6 +2,11 @@ module Capistrano
   module Que::Helpers
     
     def que_queue
+      puts self.methods
+      puts properties
+      puts role
+      puts server
+      
       on roles(:que) do |server|
         server.properties.queue.to_s
       end
