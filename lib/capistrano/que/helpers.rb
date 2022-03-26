@@ -2,14 +2,7 @@ module Capistrano
   module Que::Helpers
     
     def que_queue
-      puts self.methods
-      
-      #puts server
-      puts role.properties
-      
-      on roles(:que) do |server|
-        server.properties.queue.to_s
-      end
+      fetch(:queue)
     end
 
     def que_require
