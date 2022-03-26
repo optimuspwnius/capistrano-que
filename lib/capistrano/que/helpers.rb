@@ -3,8 +3,9 @@ module Capistrano
     
     def que_queue
       puts self.methods
-      puts self.to_yaml
-      puts server
+      
+      #puts server
+      puts role_properties
       
       on roles(:que) do |server|
         server.properties.queue.to_s
