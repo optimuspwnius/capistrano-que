@@ -3,7 +3,7 @@ module Capistrano
     
     def que_queue
       puts self.methods
-      puts role
+      puts self.to_yaml
       puts server
       
       on roles(:que) do |server|
