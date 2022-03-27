@@ -42,9 +42,10 @@ namespace :que do
 
   desc 'Install systemd que service'
   task :install do
-    puts git_plugin.methods
+    #puts git_plugin.methods
     on roles fetch(:que_roles) do |role|
       git_plugin.switch_user(role) do
+       puts role.properties.queue
        git_plugin.set :queue, role.properties.queue
        git_plugin.create_systemd_template
        git_plugin.systemctl_command(:enable)
