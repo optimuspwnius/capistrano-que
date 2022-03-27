@@ -102,7 +102,7 @@ namespace :que do
     ]
     template_path = search_paths.detect { |path| File.file?(path) }
     template = File.read(template_path)
-    puts template
+    #puts template
     ERB.new(template).result(binding)
   end
 
@@ -114,7 +114,7 @@ namespace :que do
 
     backend.execute :mkdir, "-p", systemd_path
 
-    temp_file_name = File.join('/tmp', que_service_file_name)
+    temp_file_name = File.join('/tmp', que_service_file_name, SecureRandom.hex(10))
     backend.upload!(StringIO.new(ctemplate), temp_file_name)
 
     backend.execute :mv, temp_file_name, systemd_file_name
