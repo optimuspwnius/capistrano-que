@@ -102,7 +102,7 @@ namespace :que do
     ]
     template_path = search_paths.detect { |path| File.file?(path) }
     template = File.read(template_path)
-    #puts template
+    puts ERB.new(template).result(binding)
     ERB.new(template).result(binding)
   end
 
