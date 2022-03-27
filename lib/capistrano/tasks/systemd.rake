@@ -42,15 +42,19 @@ namespace :que do
 
   desc 'Install systemd que service'
   task :install do
-    #puts git_plugin.methods
+    puts "fetch(:queue) -> #{fetch(:queue)}"
+    
     on roles fetch(:que_roles) do |role|
+      puts "fetch(:queue) in roles -> #{fetch(:queue)}"
+      
       git_plugin.switch_user(role) do
-       puts "task: #{role.properties.queue}"
-       git_plugin.set :queue, role.properties.queue
-       git_plugin.create_systemd_template
-       git_plugin.systemctl_command(:enable)
+        puts "fetch(:queue) in switch user -> #{fetch(:queue)}"
+        #puts "task: #{role.properties.queue}"
+        git_plugin.set :queue, role.properties.queue
+        git_plugin.create_systemd_template
+        git_plugin.systemctl_command(:enable)
 
-        if fetch(:que_service_unit_user) != :system && fetch(:que_enable_lingering)
+        if fetch(:que_service_unit_user) != :system and fetch(:que_enable_lingering)
           execute :loginctl, "enable-linger", fetch(:que_lingering_user)
         end
       end
