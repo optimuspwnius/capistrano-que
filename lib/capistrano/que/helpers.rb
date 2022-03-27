@@ -2,7 +2,7 @@ module Capistrano
   module Que::Helpers
     
     def que_queue
-      puts fetch(:queue)
+      #puts fetch(:queue)
       fetch(:queue)
     end
 
