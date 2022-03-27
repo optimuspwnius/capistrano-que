@@ -43,6 +43,7 @@ namespace :que do
 
   desc 'Install systemd que service'
   task :install do
+    # Use in: :sequence otherwise the compiled template isnt unique
     on roles(fetch(:que_roles)), in: :sequence do |role|
       git_plugin.set :queue, role.properties.queue
       git_plugin.switch_user(role) do
