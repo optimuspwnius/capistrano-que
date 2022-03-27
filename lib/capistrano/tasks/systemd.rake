@@ -7,6 +7,7 @@ namespace :que do
     stop: 'Stop Que',
     status: 'Get Que Status'
   }
+  
   standard_actions.each do |command, description|
     desc description
     task command do
@@ -101,6 +102,7 @@ namespace :que do
     ]
     template_path = search_paths.detect { |path| File.file?(path) }
     template = File.read(template_path)
+    puts template
     ERB.new(template).result(binding)
   end
 
