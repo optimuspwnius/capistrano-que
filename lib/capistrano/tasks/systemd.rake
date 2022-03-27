@@ -43,19 +43,12 @@ namespace :que do
 
   desc 'Install systemd que service'
   task :install do
-    puts "fetch(:queue) -> #{fetch(:queue)}"
-    
-    on roles(:que), in: :parallel do |role|
-      puts "fetch(:queue) in roles -> #{fetch(:queue)}"
+    on roles(fetch(:que_roles)), in: :sequence do |role|
       git_plugin.set :queue, role.properties.queue
       git_plugin.switch_user(role) do
-        puts "fetch(:queue) in switch user -> #{fetch(:queue)}"
-        #puts "task: #{role.properties.queue}"
-        
-        puts "fetch(:queue) in switch user after setting -> #{fetch(:queue)}"
         git_plugin.create_systemd_template
         git_plugin.systemctl_command(:enable)
-
+        
         if fetch(:que_service_unit_user) != :system and fetch(:que_enable_lingering)
           execute :loginctl, "enable-linger", fetch(:que_lingering_user)
         end
@@ -90,7 +83,6 @@ namespace :que do
   end
 
   def compiled_template
-    puts "fetch(:queue) in compiled_template -> #{fetch(:queue)}"
     local_template_directory = fetch(:que_service_templates_path)
     search_paths = [
       File.join(local_template_directory, "#{fetch(:que_service_unit_name)}.service.capistrano.erb"),
@@ -102,19 +94,18 @@ namespace :que do
     ]
     template_path = search_paths.detect { |path| File.file?(path) }
     template = File.read(template_path)
-    puts ERB.new(template).result(binding)
+    
     ERB.new(template).result(binding)
   end
 
   def create_systemd_template
-    puts "fetch(:queue) in create_systemd_template -> #{fetch(:queue)}"
     ctemplate = compiled_template
     systemd_path = fetch(:service_unit_path, fetch_systemd_unit_path)
     systemd_file_name = File.join(systemd_path, que_service_file_name)
 
     backend.execute :mkdir, "-p", systemd_path
 
-    temp_file_name = File.join('/tmp', "#{que_service_file_name}_#{SecureRandom.hex(10)}")
+    temp_file_name = File.join('/tmp', que_service_file_name)
     backend.upload!(StringIO.new(ctemplate), temp_file_name)
 
     backend.execute :mv, temp_file_name, systemd_file_name
