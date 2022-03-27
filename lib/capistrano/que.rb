@@ -9,9 +9,9 @@ module Capistrano
 
     def set_defaults
       set_if_empty :que_default_hooks, true
-
+      set_if_empty :queue, :default
       set_if_empty :que_env, -> { fetch(:rack_env, fetch(:rails_env, fetch(:rake_env, fetch(:stage)))) }
-      set_if_empty :que_roles, fetch(:que_role, :app)
+      set_if_empty :que_roles, fetch(:que_role, :que)
       set_if_empty :que_log, -> { File.join(shared_path, 'log', 'que.log') }
       set_if_empty :que_error_log, -> { File.join(shared_path, 'log', 'que.error.log') }
       # Rbenv, Chruby, and RVM integration
