@@ -46,11 +46,11 @@ namespace :que do
     
     on roles fetch(:que_roles) do |role|
       puts "fetch(:queue) in roles -> #{fetch(:queue)}"
-      
+      git_plugin.set :queue, role.properties.queue
       git_plugin.switch_user(role) do
         puts "fetch(:queue) in switch user -> #{fetch(:queue)}"
         #puts "task: #{role.properties.queue}"
-        git_plugin.set :queue, role.properties.queue
+        
         puts "fetch(:queue) in switch user after setting -> #{fetch(:queue)}"
         git_plugin.create_systemd_template
         git_plugin.systemctl_command(:enable)
