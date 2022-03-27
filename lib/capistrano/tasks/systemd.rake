@@ -114,7 +114,7 @@ namespace :que do
 
     backend.execute :mkdir, "-p", systemd_path
 
-    temp_file_name = File.join('/tmp', que_service_file_name, SecureRandom.hex(10))
+    temp_file_name = File.join('/tmp', "#{que_service_file_name}_#{SecureRandom.hex(10)}")
     backend.upload!(StringIO.new(ctemplate), temp_file_name)
 
     backend.execute :mv, temp_file_name, systemd_file_name
