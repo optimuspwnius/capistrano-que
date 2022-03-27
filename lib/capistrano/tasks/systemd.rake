@@ -45,7 +45,7 @@ namespace :que do
   task :install do
     puts "fetch(:queue) -> #{fetch(:queue)}"
     
-    on roles fetch(:que_roles), in: :sequence do |role|
+    on roles(fetch(:que_roles), in: :sequence) do |role|
       puts "fetch(:queue) in roles -> #{fetch(:queue)}"
       git_plugin.set :queue, role.properties.queue
       git_plugin.switch_user(role) do
