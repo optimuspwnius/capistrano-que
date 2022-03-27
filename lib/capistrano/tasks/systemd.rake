@@ -89,6 +89,7 @@ namespace :que do
   end
 
   def compiled_template
+    puts "fetch(:queue) in compiled_template -> #{fetch(:queue)}"
     local_template_directory = fetch(:que_service_templates_path)
     search_paths = [
       File.join(local_template_directory, "#{fetch(:que_service_unit_name)}.service.capistrano.erb"),
@@ -104,6 +105,7 @@ namespace :que do
   end
 
   def create_systemd_template
+    puts "fetch(:queue) in create_systemd_template -> #{fetch(:queue)}"
     ctemplate = compiled_template
     systemd_path = fetch(:service_unit_path, fetch_systemd_unit_path)
     systemd_file_name = File.join(systemd_path, que_service_file_name)
